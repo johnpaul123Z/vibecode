@@ -17,18 +17,49 @@ const dummyProducts = [
     ethicalSourcing: 'Recycled materials',
     affiliateLink: 'https://affiliate.example/bottle',
   },
+  {
+    id: 3,
+    name: 'Organic Cotton T-Shirt',
+    carbonFootprint: 4,
+    ethicalSourcing: 'Organic',
+    affiliateLink: 'https://affiliate.example/tshirt',
+  },
+  {
+    id: 4,
+    name: 'Recycled Notebook',
+    carbonFootprint: 2,
+    ethicalSourcing: 'Recycled Paper',
+    affiliateLink: 'https://affiliate.example/notebook',
+  },
+  {
+    id: 5,
+    name: 'Solar Powered Charger',
+    carbonFootprint: 1,
+    ethicalSourcing: 'Renewable Energy',
+    affiliateLink: 'https://affiliate.example/charger',
+  },
 ]
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState('')
+  const [maxCarbon, setMaxCarbon] = useState('')
+  const [ethicalFilter, setEthicalFilter] = useState('')
   const [filteredProducts, setFilteredProducts] = useState(dummyProducts)
 
   const handleSearch = (e) => {
     e.preventDefault()
     const term = searchTerm.toLowerCase()
-    const results = dummyProducts.filter(product =>
-      product.name.toLowerCase().includes(term)
-    )
+    const maxCarbonValue = maxCarbon ? parseInt(maxCarbon, 10) : null
+    const ethicalTerm = ethicalFilter.toLowerCase()
+
+    const results = dummyProducts.filter(product => {
+      const matchesName = product.name.toLowerCase().includes(term)
+      const matchesCarbon = maxCarbonValue ? product.carbonFootprint <= maxCarbonValue : true
+      const matchesEthical = ethicalTerm
+        ? product.ethicalSourcing.toLowerCase().includes(ethicalTerm)
+        : true
+      return matchesName && matchesCarbon && matchesEthical
+    })
     setFilteredProducts(results)
   }
 
@@ -44,6 +75,18 @@ function Home() {
           placeholder="Search products..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Max Carbon Footprint"
+          value={maxCarbon}
+          onChange={(e) => setMaxCarbon(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Ethical Sourcing"
+          value={ethicalFilter}
+          onChange={(e) => setEthicalFilter(e.target.value)}
         />
         <button type="submit">Search</button>
       </form>
