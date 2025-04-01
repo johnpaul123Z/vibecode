@@ -1,67 +1,79 @@
-import { useState } from 'react'
-import ProductCard from '../components/ProductCard.jsx'
-import './Home.css'
+import { useState } from "react";
+import ProductCard from "../components/ProductCard.jsx";
+import Subscription from "../components/Subscription.jsx";
+import "./Home.css";
 
 const dummyProducts = [
   {
     id: 1,
-    name: 'Eco-friendly Toothbrush',
+    name: "Eco-friendly Toothbrush",
     carbonFootprint: 5,
-    ethicalSourcing: 'Fair Trade',
-    affiliateLink: 'https://affiliate.example/toothbrush',
+    ethicalSourcing: "Fair Trade",
+    affiliateLink: "https://affiliate.example/toothbrush",
   },
   {
     id: 2,
-    name: 'Sustainable Water Bottle',
+    name: "Sustainable Water Bottle",
     carbonFootprint: 3,
-    ethicalSourcing: 'Recycled materials',
-    affiliateLink: 'https://affiliate.example/bottle',
+    ethicalSourcing: "Recycled materials",
+    affiliateLink: "https://affiliate.example/bottle",
   },
   {
     id: 3,
-    name: 'Organic Cotton T-Shirt',
+    name: "Organic Cotton T-Shirt",
     carbonFootprint: 4,
-    ethicalSourcing: 'Organic',
-    affiliateLink: 'https://affiliate.example/tshirt',
+    ethicalSourcing: "Organic",
+    affiliateLink: "https://affiliate.example/tshirt",
   },
   {
     id: 4,
-    name: 'Recycled Notebook',
+    name: "Recycled Notebook",
     carbonFootprint: 2,
-    ethicalSourcing: 'Recycled Paper',
-    affiliateLink: 'https://affiliate.example/notebook',
+    ethicalSourcing: "Recycled Paper",
+    affiliateLink: "https://affiliate.example/notebook",
   },
   {
     id: 5,
-    name: 'Solar Powered Charger',
+    name: "Solar Powered Charger",
     carbonFootprint: 1,
-    ethicalSourcing: 'Renewable Energy',
-    affiliateLink: 'https://affiliate.example/charger',
+    ethicalSourcing: "Renewable Energy",
+    affiliateLink: "https://affiliate.example/charger",
   },
-]
+  // Sponsored product example
+  {
+    id: 6,
+    name: "Premium Sustainable Backpack",
+    carbonFootprint: 2,
+    ethicalSourcing: "Eco Certified",
+    affiliateLink: "https://affiliate.example/backpack",
+    sponsored: true,
+  },
+];
 
 function Home() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [maxCarbon, setMaxCarbon] = useState('')
-  const [ethicalFilter, setEthicalFilter] = useState('')
-  const [filteredProducts, setFilteredProducts] = useState(dummyProducts)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [maxCarbon, setMaxCarbon] = useState("");
+  const [ethicalFilter, setEthicalFilter] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState(dummyProducts);
 
   const handleSearch = (e) => {
-    e.preventDefault()
-    const term = searchTerm.toLowerCase()
-    const maxCarbonValue = maxCarbon ? parseInt(maxCarbon, 10) : null
-    const ethicalTerm = ethicalFilter.toLowerCase()
+    e.preventDefault();
+    const term = searchTerm.toLowerCase();
+    const maxCarbonValue = maxCarbon ? parseInt(maxCarbon, 10) : null;
+    const ethicalTerm = ethicalFilter.toLowerCase();
 
-    const results = dummyProducts.filter(product => {
-      const matchesName = product.name.toLowerCase().includes(term)
-      const matchesCarbon = maxCarbonValue ? product.carbonFootprint <= maxCarbonValue : true
+    const results = dummyProducts.filter((product) => {
+      const matchesName = product.name.toLowerCase().includes(term);
+      const matchesCarbon = maxCarbonValue
+        ? product.carbonFootprint <= maxCarbonValue
+        : true;
       const matchesEthical = ethicalTerm
         ? product.ethicalSourcing.toLowerCase().includes(ethicalTerm)
-        : true
-      return matchesName && matchesCarbon && matchesEthical
-    })
-    setFilteredProducts(results)
-  }
+        : true;
+      return matchesName && matchesCarbon && matchesEthical;
+    });
+    setFilteredProducts(results);
+  };
 
   return (
     <div className="home-container">
@@ -91,18 +103,23 @@ function Home() {
         <button type="submit">Search</button>
       </form>
       <section className="products">
-        {filteredProducts.map(product => (
+        {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
         {filteredProducts.length === 0 && <p>No products found.</p>}
       </section>
+      {/* Subscription call-to-action */}
+      <section className="subscription-section">
+        <Subscription />
+      </section>
       <footer>
         <p>
-          Monetization options: affiliate links, sponsored placements, or a subscription for advanced features.
+          Monetization includes affiliate links, sponsored placements and
+          subscriptions for advanced features.
         </p>
       </footer>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
